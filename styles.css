@@ -1,173 +1,146 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+:root {
+    --primary: #4CAF50; /* Green for learning */
+    --accent: #FF9800; /* Orange for fun */
+    --success: #8BC34A;
+    --error: #F44336;
+    --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-body {
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: #222;
-  min-height: 100vh;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+    font-family: 'Poppins', sans-serif; /* Google font - add <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"> */
+    background: var(--bg-gradient); 
+    color: #333; 
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
-header {
-  background: #4CAF50;
-  color: white;
-  padding: 1rem;
-  text-align: center;
+header { 
+    background: rgba(76, 175, 80, 0.95); 
+    backdrop-filter: blur(10px); 
+    color: white; 
+    padding: 1rem 2rem; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
-
-nav {
-  margin-top: 0.5rem;
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+header h1 { font-size: 1.5rem; }
+nav button { 
+    background: transparent; 
+    border: 2px solid white; 
+    color: white; 
+    padding: 0.5rem 1rem; 
+    border-radius: 20px; 
+    margin-left: 0.5rem;
+    transition: all 0.3s ease;
 }
+nav button:hover { background: white; color: var(--primary); transform: translateY(-2px); }
 
-main {
-  padding: 1rem;
+.screen { padding: 2rem; max-width: 900px; margin: auto; animation: fadeIn 0.5s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.hidden { display: none; }
+
+/* Gamified Elements */
+.profile-card, .game-card { 
+    background: rgba(255,255,255,0.95); 
+    backdrop-filter: blur(15px); 
+    border-radius: 20px; 
+    padding: 2rem; 
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1); 
+    margin: 1rem 0;
 }
-
-.screen {
-  max-width: 900px;
-  margin: 1rem auto;
+.streak-badge { 
+    background: linear-gradient(45deg, var(--accent), gold); 
+    color: white; 
+    padding: 0.5rem 1rem; 
+    border-radius: 50px; 
+    font-weight: 600; 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 0.5rem;
+    animation: bounce 0.6s infinite alternate;
 }
+@keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-5px); } }
 
-.hidden {
-  display: none;
+progress { 
+    width: 100%; 
+    height: 12px; 
+    border-radius: 10px; 
+    background: #e0e0e0; 
+    overflow: hidden;
 }
+progress::-webkit-progress-bar { background: #e0e0e0; border-radius: 10px; }
+progress::-webkit-progress-value { background: linear-gradient(90deg, var(--success), var(--primary)); transition: width 1s ease; animation: progressGlow 2s ease-in-out infinite alternate; }
+@keyframes progressGlow { 0% { filter: brightness(1); } 100% { filter: brightness(1.2); } }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 0.75rem;
-  margin-top: 1rem;
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; }
+
+/* Game UI - Quiz Options */
+.quiz-options { display: flex; flex-direction: column; gap: 1rem; }
+.option-btn { 
+    background: white; 
+    border: 3px solid #ddd; 
+    color: #666; 
+    padding: 1.5rem; 
+    border-radius: 15px; 
+    font-size: 1.1rem; 
+    cursor: pointer; 
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Bounce ease */
+    position: relative; 
+    overflow: hidden;
 }
-
-button {
-  background: #4CAF50;
-  color: white;
-  border: none;
-  padding: 0.7rem 1.3rem;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s;
-  font-size: 0.95rem;
+.option-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition: left 0.5s; }
+.option-btn:hover::before { left: 100%; }
+.option-btn:hover { 
+    transform: scale(1.05) translateY(-5px); 
+    border-color: var(--accent); 
+    box-shadow: 0 15px 30px rgba(255,152,0,0.3);
+    color: var(--primary);
 }
+.option-btn.correct { background: var(--success); color: white; animation: correctShake 0.5s ease; border-color: #4CAF50; }
+.option-btn.incorrect { background: var(--error); color: white; animation: wrongShake 0.5s ease; border-color: #F44336; }
+@keyframes correctShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+@keyframes wrongShake { 0%, 100% { transform: translateX(0); } 25%, 75% { transform: translateX(20px); } }
 
-button.secondary {
-  background: #ffffff;
-  color: #4CAF50;
-  border: 1px solid #4CAF50;
+/* Spell Bee / Letter Ladder / Missing Words */
+.spell-input { 
+    font-size: 2rem; 
+    text-align: center; 
+    padding: 1rem; 
+    border: 4px dashed var(--accent); 
+    border-radius: 15px; 
+    background: rgba(255,255,255,0.8); 
+    transition: all 0.3s ease;
+    letter-spacing: 0.2em;
 }
-
-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+.spell-input:focus { border-color: var(--primary); transform: scale(1.02); box-shadow: 0 0 20px rgba(76,175,80,0.3); }
+.word-letters { 
+    font-size: 3rem; 
+    font-weight: bold; 
+    text-align: center; 
+    margin: 1rem 0; 
+    color: var(--accent);
 }
-
-.card {
-  background: rgba(255,255,255,0.95);
-  padding: 1rem;
-  border-radius: 16px;
-  margin-top: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+.game-timer { 
+    font-size: 1.5rem; 
+    color: var(--error); 
+    text-align: center; 
+    animation: pulse 1s infinite;
 }
+.confetti-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 1000; }
 
-label {
-  display: block;
-  margin-bottom: 0.75rem;
-  font-size: 0.9rem;
+/* Leaderboard */
+.leaderboard { 
+    background: rgba(255,255,255,0.95); 
+    border-radius: 20px; 
+    overflow: hidden;
 }
+.rank-row { display: flex; justify-content: space-between; padding: 1rem 2rem; border-bottom: 1px solid #eee; }
+.rank-row.gold { background: linear-gradient(45deg, gold, orange); color: white; }
 
-input {
-  width: 100%;
-  padding: 0.5rem 0.7rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  margin-top: 0.25rem;
-}
+/* Responsive */
+@media (max-width: 768px) { .screen { padding: 1rem; } .grid { grid-template-columns: repeat(2, 1fr); } }
 
-.stats {
-  display: flex;
-  justify-content: space-between;
-  margin: 0.5rem 0;
-  font-weight: 600;
-}
-
-progress {
-  width: 100%;
-  height: 16px;
-  border-radius: 999px;
-}
-
-#badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.badge {
-  background: gold;
-  padding: 0.25rem 0.6rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-#course {
-  margin-top: 1rem;
-}
-
-#courseTitle {
-  color: #fff;
-}
-
-#courseContent {
-  margin-top: 0.75rem;
-}
-
-.quiz-option {
-  display: block;
-  background: #fff;
-  padding: 0.5rem 0.75rem;
-  border-radius: 8px;
-  margin: 0.4rem 0;
-  border: 1px solid #ddd;
-  cursor: pointer;
-}
-
-.quiz-option.selected {
-  border-color: #4CAF50;
-  background: #e8f5e9;
-}
-
-.scorecard {
-  background: #fff;
-  padding: 1rem;
-  border-radius: 16px;
-  margin-top: 0.5rem;
-}
-
-@media (max-width: 600px) {
-  header h1 {
-    font-size: 1.2rem;
-  }
-
-  button {
-    width: 100%;
-  }
-
-  .stats {
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-}
+ 
+ 
