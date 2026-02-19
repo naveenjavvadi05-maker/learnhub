@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LearnHub - Offline Learning App</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+  <script src="db.js" defer></script>
+  <script src="utils.js" defer></script>
+  <script src="games.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>🚀 LearnHub</h1>
+    <nav>
+      <button onclick="showSection('home')">Home</button>
+      <button onclick="showSection('profile')">Profile</button>
+      <button onclick="showSection('dashboard')">Dashboard</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HOME: grade/subject/chapter/lesson -->
+    <section id="home" class="screen">
+      <h2>Select Grade</h2>
+      <div class="grid" id="grades"></div>
+
+      <div id="course" class="hidden">
+        <h3 id="courseTitle"></h3>
+        <div id="courseContent"></div>
+        <button id="backBtn" class="secondary" onclick="goBack()">← Back</button>
+      </div>
+    </section>
+
+    <!-- PROFILE -->
+    <section id="profile" class="screen hidden">
+      <h2>👤 Profile</h2>
+      <div class="card">
+        <label>
+          Name
+          <input id="studentName" placeholder="Name">
+        </label>
+        <label>
+          Grade
+          <input id="studentGrade" type="number" placeholder="Grade" min="1" max="10">
+        </label>
+        <label>
+          Profile Picture
+          <input type="file" id="profilePic" accept="image/*">
+        </label>
+        <div class="stats">
+          <p>Points: <span id="totalPoints">0</span></p>
+          <p>Streak: <span id="streak">0</span> days</p>
+        </div>
+        <label>
+          Level Progress
+          <progress id="levelProgress" value="0" max="100"></progress>
+        </label>
+        <div>
+          <h3>Badges</h3>
+          <div id="badges"></div>
+        </div>
+        <button onclick="handleSaveProfile()">Save Profile</button>
+      </div>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="screen hidden">
+      <h2>📊 Dashboard</h2>
+      <div class="card">
+        <p>Total Score: <span id="dashScore">0</span></p>
+        <p>Completed: <span id="completed">0</span> | Pending: <span id="pending">0</span></p>
+        <p>Rank: #<span id="rank">1</span></p>
+        <canvas id="weeklyGraph" width="320" height="160"></canvas>
+      </div>
+
+      <div class="card">
+        <h3>Leaderboard</h3>
+        <ol id="leaderboard"></ol>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    window.addEventListener('load', () => {
+      initDB(() => {
+        loadProfile(renderProfile);
+        renderGrades();
+      });
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
+      }
+    });
+  </script>
+</body>
+</html>
